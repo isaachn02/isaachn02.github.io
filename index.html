@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Exámenes SQL</title>
+    <title>Ejercicios SQL</title>
 
     <style>
         * {
@@ -14,159 +13,128 @@
 
         body {
             margin: 0;
-            background: #1e1e1e;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         header {
-            padding: 25px 20px;
-            background: #24577a;
+            padding: 35px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #d1d5db;
             text-align: center;
         }
 
         header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        header p {
             margin: 0;
-            font-size: 28px;
-        }
-
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-
-            padding: 10px;
-            background: #dddddd;
-            border-bottom: 1px solid #888888;
-        }
-
-        nav a {
-            padding: 9px 14px;
-            border: 1px solid #999999;
-            border-radius: 4px;
-
-            background: #f7f7f7;
-            color: #222222;
-
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        nav a:hover {
-            background: #d8ecf8;
+            color: #6b7280;
         }
 
         main {
-            width: min(1200px, calc(100% - 20px));
-            margin: 25px auto;
+            width: min(1100px, calc(100% - 24px));
+            margin: 30px auto;
         }
 
-        section {
-            margin-bottom: 35px;
+        .acciones-generales {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .bloque {
+            margin-bottom: 30px;
             overflow: hidden;
-
-            border: 1px solid #666666;
-            border-radius: 6px;
-
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
             background: #ffffff;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
         }
 
-        .titulo {
+        .cabecera {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 15px;
-
-            padding: 13px 16px;
-
-            background: #e4e4e4;
-            color: #222222;
-
-            border-bottom: 1px solid #999999;
+            padding: 16px 18px;
+            border-bottom: 1px solid #d1d5db;
+            background: #f9fafb;
         }
 
-        .titulo h2 {
+        .cabecera h2 {
             margin: 0;
-            font-size: 18px;
+            font-size: 20px;
         }
 
         button {
-            padding: 8px 12px;
-
-            border: 1px solid #777777;
-            border-radius: 4px;
-
-            background: #ffffff;
-            color: #222222;
-
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
 
         button:hover {
-            background: #d8ecf8;
+            background: #1d4ed8;
         }
 
         .codigo {
-            max-height: 75vh;
+            max-height: 650px;
             overflow: auto;
-
-            background: #ffffff;
+            background: #111827;
         }
 
         pre {
             min-width: max-content;
             margin: 0;
             padding: 20px;
-
-            color: #111111;
-            background: #ffffff;
-
+            color: #f9fafb;
             font-family: Consolas, Monaco, "Courier New", monospace;
             font-size: 14px;
             line-height: 1.55;
-
+            white-space: pre;
             tab-size: 4;
         }
 
         .aviso {
             position: fixed;
-            right: 15px;
-            bottom: 15px;
-
-            padding: 11px 15px;
-
-            border-radius: 5px;
-
-            background: #24577a;
-            color: #ffffff;
-
+            right: 18px;
+            bottom: 18px;
+            padding: 12px 16px;
+            border-radius: 7px;
+            background: #166534;
+            color: white;
             opacity: 0;
+            transform: translateY(10px);
             pointer-events: none;
-
-            transition: opacity 0.2s;
+            transition: 0.2s;
         }
 
         .aviso.visible {
             opacity: 1;
+            transform: translateY(0);
+        }
+
+        footer {
+            padding: 25px;
+            color: #6b7280;
+            text-align: center;
         }
 
         @media (max-width: 600px) {
             header h1 {
-                font-size: 23px;
+                font-size: 25px;
             }
 
-            nav {
-                justify-content: flex-start;
-                overflow-x: auto;
-            }
-
-            .titulo {
-                align-items: flex-start;
+            .cabecera {
+                align-items: stretch;
                 flex-direction: column;
             }
 
@@ -185,23 +153,28 @@
 <body>
 
 <header>
-    <h1>Exámenes SQL</h1>
+    <h1>Ejercicios SQL</h1>
+    <p>Código completo de los dos exámenes</p>
 </header>
-
-<nav>
-    <a href="#curasano">CuraSano DB</a>
-    <a href="#dinerosbank">DinerosBank DB</a>
-</nav>
 
 <main>
 
-    <section id="curasano">
+    <div class="acciones-generales">
+        <button type="button" onclick="copiarAmbos()">
+            Copiar los dos ejercicios
+        </button>
+    </div>
 
-        <div class="titulo">
+    <section class="bloque">
+
+        <div class="cabecera">
             <h2>Examen 1: CuraSano DB</h2>
 
-            <button onclick="copiarCodigo('codigoCuraSano')">
-                Copiar SQL
+            <button
+                type="button"
+                onclick="copiarCodigo('codigoCuraSano')"
+            >
+                Copiar código
             </button>
         </div>
 
@@ -319,15 +292,19 @@ CALL ultimaConsultaMedico(1, @ultimaConsulta);
 SELECT @ultimaConsulta;</code></pre>
 
         </div>
+
     </section>
 
-    <section id="dinerosbank">
+    <section class="bloque">
 
-        <div class="titulo">
+        <div class="cabecera">
             <h2>Examen 2: DinerosBank DB</h2>
 
-            <button onclick="copiarCodigo('codigoDinerosBank')">
-                Copiar SQL
+            <button
+                type="button"
+                onclick="copiarCodigo('codigoDinerosBank')"
+            >
+                Copiar código
             </button>
         </div>
 
@@ -501,24 +478,27 @@ CALL totalPrestamosEstado(1, 'aprobado', @total);
 SELECT @total;</code></pre>
 
         </div>
+
     </section>
 
 </main>
 
+<footer>
+    Ejercicios SQL
+</footer>
+
 <div class="aviso" id="aviso">
-    Código SQL copiado
+    Código copiado
 </div>
 
 <script>
-    async function copiarCodigo(id) {
-        const codigo = document.getElementById(id).textContent;
-
+    async function copiarTexto(texto) {
         try {
-            await navigator.clipboard.writeText(codigo);
+            await navigator.clipboard.writeText(texto);
         } catch (error) {
             const area = document.createElement("textarea");
 
-            area.value = codigo;
+            area.value = texto;
             document.body.appendChild(area);
 
             area.select();
@@ -527,6 +507,30 @@ SELECT @total;</code></pre>
             area.remove();
         }
 
+        mostrarAviso();
+    }
+
+    function copiarCodigo(id) {
+        const codigo = document.getElementById(id).textContent;
+
+        copiarTexto(codigo);
+    }
+
+    function copiarAmbos() {
+        const codigo1 =
+            document.getElementById("codigoCuraSano").textContent;
+
+        const codigo2 =
+            document.getElementById("codigoDinerosBank").textContent;
+
+        copiarTexto(
+            codigo1
+            + "\n\n"
+            + codigo2
+        );
+    }
+
+    function mostrarAviso() {
         const aviso = document.getElementById("aviso");
 
         aviso.classList.add("visible");
