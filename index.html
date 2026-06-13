@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Exámenes SQL de CuraSano_db y dinerosBank_db"
+    >
+
+    <meta name="author" content="Isaac">
+
+    <title>Exámenes SQL | Isaac</title>
+
+    <style>
+        :root {
+            color-scheme: dark;
+
+            --fondo: #080b12;
+            --superficie: #111827;
+            --superficie-clara: #172033;
+            --texto: #f4f7fb;
+            --texto-secundario: #a9b3c7;
+            --borde: #2a3650;
+            --verde: #6ee7b7;
+            --verde-oscuro: #064e3b;
+            --codigo: #070a10;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(110, 231, 183, 0.10),
+                    transparent 35%
+                ),
+                var(--fondo);
+
+            color: var(--texto);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 60px 20px 35px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 12px;
+
+            font-size:
+                clamp(
+                    2rem,
+                    8vw,
+                    4rem
+                );
+
+            line-height: 1.05;
+        }
+
+        header p {
+            max-width: 700px;
+            margin: 0 auto;
+
+            color: var(--texto-secundario);
+            font-size: 1.05rem;
+        }
+
+        .autor {
+            display: inline-block;
+
+            margin-top: 18px;
+            padding: 7px 14px;
+
+            border: 1px solid var(--borde);
+            border-radius: 999px;
+
+            color: var(--verde);
+            background: rgba(17, 24, 39, 0.7);
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+
+            padding: 12px 16px;
+
+            border-top: 1px solid var(--borde);
+            border-bottom: 1px solid var(--borde);
+
+            background: rgba(8, 11, 18, 0.92);
+
+            backdrop-filter: blur(12px);
+        }
+
+        nav a {
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            color: var(--texto);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover,
+        nav a:focus {
+            color: var(--verde);
+            background: var(--superficie);
+            outline: none;
+        }
+
+        main {
+            width: min(
+                1180px,
+                calc(100% - 24px)
+            );
+
+            margin: 36px auto 70px;
+        }
+
+        .examen {
+            margin-bottom: 38px;
+
+            overflow: hidden;
+
+            border: 1px solid var(--borde);
+            border-radius: 18px;
+
+            background: var(--superficie);
+
+            box-shadow:
+                0 22px 50px
+                rgba(0, 0, 0, 0.25);
+        }
+
+        .cabecera-examen {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+
+            padding: 20px;
+
+            border-bottom: 1px solid var(--borde);
+
+            background: var(--superficie-clara);
+        }
+
+        .cabecera-examen h2 {
+            margin: 0;
+            font-size: 1.35rem;
+        }
+
+        .base-datos {
+            margin: 3px 0 0;
+
+            color: var(--texto-secundario);
+
+            font-family:
+                Consolas,
+                Monaco,
+                monospace;
+        }
+
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        button {
+            padding: 10px 13px;
+
+            border: 1px solid var(--borde);
+            border-radius: 10px;
+
+            background: var(--fondo);
+            color: var(--texto);
+
+            font-size: 0.92rem;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover,
+        button:focus {
+            border-color: var(--verde);
+            color: var(--verde);
+            outline: none;
+        }
+
+        .contenedor-codigo {
+            position: relative;
+
+            overflow: auto;
+
+            max-height: 75vh;
+
+            background: var(--codigo);
+        }
+
+        pre {
+            min-width: max-content;
+
+            margin: 0;
+            padding: 24px;
+
+            color: #e6edf7;
+
+            font-family:
+                Consolas,
+                Monaco,
+                "Courier New",
+                monospace;
+
+            font-size: 0.9rem;
+            line-height: 1.62;
+
+            tab-size: 4;
+        }
+
+        footer {
+            padding: 28px 20px;
+
+            border-top: 1px solid var(--borde);
+
+            color: var(--texto-secundario);
+            text-align: center;
+        }
+
+        .aviso {
+            position: fixed;
+            right: 16px;
+            bottom: 16px;
+            z-index: 20;
+
+            max-width: calc(100% - 32px);
+
+            padding: 12px 16px;
+
+            border: 1px solid var(--verde);
+            border-radius: 12px;
+
+            background: var(--verde-oscuro);
+            color: white;
+
+            opacity: 0;
+            transform: translateY(15px);
+
+            pointer-events: none;
+
+            transition:
+                opacity 0.2s,
+                transform 0.2s;
+        }
+
+        .aviso.mostrar {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 620px) {
+            header {
+                padding-top: 44px;
+            }
+
+            nav {
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .cabecera-examen {
+                align-items: flex-start;
+            }
+
+            .acciones {
+                width: 100%;
+            }
+
+            .acciones button {
+                width: 100%;
+            }
+
+            pre {
+                padding: 18px;
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Exámenes SQL</h1>
+
+        <p>
+            Creación y modificación de tablas,
+            consultas, funciones y procedimientos
+            almacenados en MySQL.
+        </p>
+
+        <span class="autor">
+            Autor: Isaac
+        </span>
+    </header>
+
+    <nav aria-label="Navegación por los exámenes">
+        <a href="#curasano">
+            CuraSano DB
+        </a>
+
+        <a href="#dinerosbank">
+            DinerosBank DB
+        </a>
+    </nav>
+
+    <main>
+
+        <!-- ========================================== -->
+        <!-- EXAMEN 1 -->
+        <!-- ========================================== -->
+
+        <section
+            class="examen"
+            id="curasano"
+        >
+
+            <div class="cabecera-examen">
+
+                <div>
+                    <h2>
+                        Examen 1: CuraSano DB
+                    </h2>
+
+                    <p class="base-datos">
+                        Base de datos: CuraSano_db
+                    </p>
+                </div>
+
+                <div class="acciones">
+
+                    <button
+                        type="button"
+                        onclick="copiarCodigo('codigo1')"
+                    >
+                        Copiar SQL
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="
+                            descargarSQL(
+                                'codigo1',
+                                'CuraSano_db.sql'
+                            )
+                        "
+                    >
+                        Descargar .sql
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="contenedor-codigo">
+
+<pre><code id="codigo1">-- =====================================================
+-- EXAMEN 1: CURASANO_DB
+-- =====================================================
+
+DROP DATABASE IF EXISTS CuraSano_db;
+CREATE DATABASE CuraSano_db;
+USE CuraSano_db;
+
+-- =====================================================
+-- EJERCICIO 01
+-- Crear tablas
+-- =====================================================
+
+CREATE TABLE Medicos (
+    idMedico INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(80) NOT NULL,
+    especialidad VARCHAR(30) NOT NULL,
+    turno CHAR(10) NOT NULL
+);
+
+CREATE TABLE Salas (
+    idSala INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
+    tipo VARCHAR(30) NOT NULL,
+    capacidad INT NULL
+);
+
+CREATE TABLE Consultas (
+    idConsulta INT AUTO_INCREMENT PRIMARY KEY,
+    fechaHora DATETIME NOT NULL,
+    duracion INT NOT NULL,
+    estado ENUM(
+        'pendiente',
+        'finalizada',
+        'cancelada'
+    ) NOT NULL,
+    idMedico INT NOT NULL,
+    idSala INT NOT NULL,
+
+    FOREIGN KEY (idMedico)
+        REFERENCES Medicos(idMedico),
+
+    FOREIGN KEY (idSala)
+        REFERENCES Salas(idSala)
+);
+
+-- Modificaciones
+
+ALTER TABLE Consultas
+ADD observaciones TEXT NULL;
+
+ALTER TABLE Salas
+ADD CONSTRAINT chk_capacidad
+CHECK (capacidad &lt;= 50);
+
+ALTER TABLE Medicos
+DROP COLUMN turno;
+
+-- =====================================================
+-- EJERCICIO 02
+-- Consultas
+-- =====================================================
+
+-- 1. Mostrar identificador, fecha y código de sala,
+-- ordenado por fecha descendente
+
+SELECT
+    c.idConsulta,
+    c.fechaHora,
+    s.codigo
+FROM Consultas c
+JOIN Salas s
+    ON c.idSala = s.idSala
+ORDER BY c.fechaHora DESC;
+
+-- 2. Médicos con más de 5 consultas registradas
+
+SELECT
+    c.idMedico,
+    COUNT(c.idConsulta) AS total_consultas
+FROM Consultas c
+GROUP BY c.idMedico
+HAVING COUNT(c.idConsulta) &gt; 5;
+
+-- 3. Médicos sin consultas registradas
+-- usando subconsulta
+
+SELECT
+    nombre,
+    especialidad
+FROM Medicos
+WHERE idMedico NOT IN (
+    SELECT idMedico
+    FROM Consultas
+);
+
+-- 4. Actualizar consultas pendientes
+-- anteriores a la fecha actual
+
+UPDATE Consultas
+SET estado = 'finalizada'
+WHERE estado = 'pendiente'
+AND fechaHora &lt; NOW();
+
+-- =====================================================
+-- EJERCICIO 03
+-- Procedimiento almacenado
+-- =====================================================
+
+DELIMITER $$
+
+CREATE PROCEDURE ultimaConsultaMedico(
+    IN p_idMedico INT,
+    OUT p_fechaHora DATETIME
+)
+BEGIN
+
+    SELECT MAX(fechaHora)
+    INTO p_fechaHora
+    FROM Consultas
+    WHERE idMedico = p_idMedico;
+
+END $$
+
+DELIMITER ;
+
+-- Llamada de prueba
+
+CALL ultimaConsultaMedico(
+    1,
+    @ultimaConsulta
+);
+
+SELECT @ultimaConsulta;</code></pre>
+
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- EXAMEN 2 -->
+        <!-- ========================================== -->
+
+        <section
+            class="examen"
+            id="dinerosbank"
+        >
+
+            <div class="cabecera-examen">
+
+                <div>
+                    <h2>
+                        Examen 2: DinerosBank DB
+                    </h2>
+
+                    <p class="base-datos">
+                        Base de datos: dinerosBank_db
+                    </p>
+                </div>
+
+                <div class="acciones">
+
+                    <button
+                        type="button"
+                        onclick="copiarCodigo('codigo2')"
+                    >
+                        Copiar SQL
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="
+                            descargarSQL(
+                                'codigo2',
+                                'dinerosBank_db.sql'
+                            )
+                        "
+                    >
+                        Descargar .sql
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="contenedor-codigo">
+
+<pre><code id="codigo2">-- =====================================================
+-- EXAMEN 2: DINEROSBANK_DB
+-- =====================================================
+
+DROP DATABASE IF EXISTS dinerosBank_db;
+CREATE DATABASE dinerosBank_db;
+USE dinerosBank_db;
+
+-- =====================================================
+-- EJERCICIO 01
+-- Crear tablas
+-- =====================================================
+
+CREATE TABLE Empleados (
+    idEmpleado INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(80) NOT NULL,
+    salario DECIMAL(10,2) NOT NULL
+);
+
+CREATE TABLE Prestamos (
+    idPrestamo INT AUTO_INCREMENT PRIMARY KEY,
+    importe DECIMAL(10,2) NOT NULL,
+    estado ENUM(
+        'pendiente',
+        'aprobado',
+        'rechazado'
+    ) NOT NULL,
+    idEmpleado INT NOT NULL,
+
+    FOREIGN KEY (idEmpleado)
+        REFERENCES Empleados(idEmpleado)
+);
+
+CREATE TABLE Pago (
+    idPago INT AUTO_INCREMENT PRIMARY KEY,
+    fechaPago DATE NOT NULL,
+    importe DECIMAL(10,2) NOT NULL,
+    metodo ENUM(
+        'transferencia',
+        'efectivo',
+        'tarjeta'
+    ) NOT NULL,
+    idPrestamo INT NOT NULL,
+
+    FOREIGN KEY (idPrestamo)
+        REFERENCES Prestamos(idPrestamo)
+);
+
+-- Modificaciones
+
+ALTER TABLE Empleados
+ADD fechaContratacion DATE;
+
+ALTER TABLE Empleados
+MODIFY salario DECIMAL(10,2) NULL;
+
+RENAME TABLE Pago TO Pagos;
+
+-- =====================================================
+-- EJERCICIO 02
+-- Consultas
+-- =====================================================
+
+-- 1. Préstamos superiores a 50.000 y aprobados
+
+SELECT *
+FROM Prestamos
+WHERE importe &gt; 50000
+AND estado = 'aprobado'
+ORDER BY importe ASC;
+
+-- 2. Empleados con importe total
+-- de préstamos gestionados,
+-- incluyendo empleados sin préstamos
+
+SELECT
+    e.idEmpleado,
+    e.nombre,
+    SUM(p.importe) AS total_importe
+FROM Empleados e
+LEFT JOIN Prestamos p
+    ON e.idEmpleado = p.idEmpleado
+GROUP BY
+    e.idEmpleado,
+    e.nombre;
+
+-- 3. Fecha del pago más reciente
+-- para cada préstamo
+
+SELECT
+    idPrestamo,
+    MAX(fechaPago) AS fecha_pago_mas_reciente
+FROM Pagos
+GROUP BY idPrestamo;
+
+-- 4. Eliminar pagos realizados en efectivo
+
+DELETE FROM Pagos
+WHERE metodo = 'efectivo';
+
+-- =====================================================
+-- EJERCICIO 03
+-- Función almacenada 1
+-- Total de préstamos aprobados de un empleado
+-- =====================================================
+
+DELIMITER $$
+
+CREATE FUNCTION totalPrestamosAprobados(
+    p_idEmpleado INT
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+
+    DECLARE total INT;
+
+    SELECT COUNT(*)
+    INTO total
+    FROM Prestamos
+    WHERE idEmpleado = p_idEmpleado
+    AND estado = 'aprobado';
+
+    RETURN total;
+
+END $$
+
+DELIMITER ;
+
+-- Consulta de prueba
+
+SELECT totalPrestamosAprobados(1);
+
+-- =====================================================
+-- FUNCIÓN ALTERNATIVA
+-- Total de préstamos de un empleado
+-- para un estado determinado
+-- =====================================================
+
+DELIMITER $$
+
+CREATE FUNCTION totalPrestamosPorEstado(
+    p_idEmpleado INT,
+    p_estado VARCHAR(20)
+)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+
+    DECLARE total INT;
+
+    SELECT COUNT(*)
+    INTO total
+    FROM Prestamos
+    WHERE idEmpleado = p_idEmpleado
+    AND estado = p_estado;
+
+    RETURN total;
+
+END $$
+
+DELIMITER ;
+
+-- Consulta de prueba
+
+SELECT totalPrestamosPorEstado(
+    1,
+    'aprobado'
+);
+
+-- =====================================================
+-- PROCEDIMIENTO ALMACENADO ALTERNATIVO
+-- Total de préstamos por empleado y estado
+-- usando parámetro OUT
+-- =====================================================
+
+DELIMITER $$
+
+CREATE PROCEDURE totalPrestamosEstado(
+    IN p_idEmpleado INT,
+    IN p_estado VARCHAR(20),
+    OUT p_total INT
+)
+BEGIN
+
+    SELECT COUNT(*)
+    INTO p_total
+    FROM Prestamos
+    WHERE idEmpleado = p_idEmpleado
+    AND estado = p_estado;
+
+END $$
+
+DELIMITER ;
+
+-- Llamada de prueba
+
+CALL totalPrestamosEstado(
+    1,
+    'aprobado',
+    @total
+);
+
+SELECT @total;</code></pre>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Isaac · Contenido académico original
+    </footer>
+
+    <div
+        class="aviso"
+        id="aviso"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <script>
+        function mostrarAviso(mensaje) {
+            const aviso =
+                document.getElementById("aviso");
+
+            aviso.textContent = mensaje;
+            aviso.classList.add("mostrar");
+
+            window.clearTimeout(
+                window.temporizadorAviso
+            );
+
+            window.temporizadorAviso =
+                window.setTimeout(
+                    function () {
+                        aviso.classList.remove(
+                            "mostrar"
+                        );
+                    },
+                    2200
+                );
+        }
+
+        async function copiarCodigo(idElemento) {
+            const codigo =
+                document.getElementById(
+                    idElemento
+                ).textContent;
+
+            try {
+                await navigator.clipboard.writeText(
+                    codigo
+                );
+
+                mostrarAviso(
+                    "Código SQL copiado."
+                );
+            } catch (error) {
+                const areaTexto =
+                    document.createElement(
+                        "textarea"
+                    );
+
+                areaTexto.value = codigo;
+
+                document.body.appendChild(
+                    areaTexto
+                );
+
+                areaTexto.select();
+
+                document.execCommand("copy");
+
+                areaTexto.remove();
+
+                mostrarAviso(
+                    "Código SQL copiado."
+                );
+            }
+        }
+
+        function descargarSQL(
+            idElemento,
+            nombreArchivo
+        ) {
+            const codigo =
+                document.getElementById(
+                    idElemento
+                ).textContent;
+
+            const archivo = new Blob(
+                [codigo],
+                {
+                    type:
+                        "text/sql;charset=utf-8"
+                }
+            );
+
+            const enlace =
+                document.createElement("a");
+
+            const direccionTemporal =
+                URL.createObjectURL(archivo);
+
+            enlace.href = direccionTemporal;
+            enlace.download = nombreArchivo;
+
+            document.body.appendChild(enlace);
+
+            enlace.click();
+            enlace.remove();
+
+            URL.revokeObjectURL(
+                direccionTemporal
+            );
+
+            mostrarAviso(
+                "Archivo SQL preparado."
+            );
+        }
+    </script>
+
+</body>
+</html>
