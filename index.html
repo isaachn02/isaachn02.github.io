@@ -1,943 +1,181 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="Ejercicios SQL presentados con una interfaz inspirada en MySQL Workbench"
-    >
-
-    <meta name="author" content="Isaac">
-
-    <title>MySQL Workbench | Exámenes SQL</title>
+    <title>Exámenes SQL</title>
 
     <style>
-        :root {
-            --azul-workbench: #2d5f8b;
-            --azul-oscuro: #183c5a;
-            --azul-claro: #dceaf5;
-
-            --gris-superior: #ececec;
-            --gris-barra: #d7d7d7;
-            --gris-borde: #a8a8a8;
-            --gris-panel: #f4f4f4;
-            --gris-pestaña: #dedede;
-
-            --fondo-editor: #ffffff;
-            --texto: #1d1d1d;
-            --texto-suave: #666666;
-
-            --verde: #177245;
-            --rojo: #b3261e;
-            --naranja: #b56400;
-
-            --sombra:
-                0 8px 30px
-                rgba(0, 0, 0, 0.20);
-        }
-
         * {
             box-sizing: border-box;
         }
 
-        html,
         body {
-            width: 100%;
-            height: 100%;
             margin: 0;
+            background: #1e1e1e;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
         }
 
-        body {
+        header {
+            padding: 25px 20px;
+            background: #24577a;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+
+            padding: 10px;
+            background: #dddddd;
+            border-bottom: 1px solid #888888;
+        }
+
+        nav a {
+            padding: 9px 14px;
+            border: 1px solid #999999;
+            border-radius: 4px;
+
+            background: #f7f7f7;
+            color: #222222;
+
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background: #d8ecf8;
+        }
+
+        main {
+            width: min(1200px, calc(100% - 20px));
+            margin: 25px auto;
+        }
+
+        section {
+            margin-bottom: 35px;
             overflow: hidden;
 
-            color: var(--texto);
+            border: 1px solid #666666;
+            border-radius: 6px;
 
-            background: #c7c7c7;
+            background: #ffffff;
+        }
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+        .titulo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+
+            padding: 13px 16px;
+
+            background: #e4e4e4;
+            color: #222222;
+
+            border-bottom: 1px solid #999999;
+        }
+
+        .titulo h2 {
+            margin: 0;
+            font-size: 18px;
         }
 
         button {
-            font: inherit;
-        }
+            padding: 8px 12px;
 
-        .aplicacion {
-            display: flex;
-            flex-direction: column;
-
-            width: 100%;
-            height: 100vh;
-
-            background: #efefef;
-        }
-
-        /* ========================================= */
-        /* BARRA DE TÍTULO */
-        /* ========================================= */
-
-        .barra-titulo {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            min-height: 38px;
-            padding: 0 12px;
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #356f9f,
-                    #245274
-                );
-
-            border-bottom: 1px solid #163a57;
-        }
-
-        .titulo-programa {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .logo-mysql {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            width: 25px;
-            height: 25px;
-
-            border: 1px solid rgba(255, 255, 255, 0.45);
+            border: 1px solid #777777;
             border-radius: 4px;
 
-            background: rgba(255, 255, 255, 0.13);
-
-            font-size: 17px;
-        }
-
-        .controles-ventana {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .control-ventana {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            width: 34px;
-            height: 25px;
-
-            border: none;
-
-            color: white;
-            background: transparent;
-
-            cursor: default;
-        }
-
-        .control-ventana:hover {
-            background: rgba(255, 255, 255, 0.16);
-        }
-
-        .control-cerrar:hover {
-            background: #c42b1c;
-        }
-
-        /* ========================================= */
-        /* MENÚ PRINCIPAL */
-        /* ========================================= */
-
-        .barra-menu {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-
-            min-height: 30px;
-            padding: 0 8px;
-
-            border-bottom: 1px solid var(--gris-borde);
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #f8f8f8,
-                    #e0e0e0
-                );
-        }
-
-        .opcion-menu {
-            padding: 5px 9px;
-
-            border: 1px solid transparent;
-            border-radius: 2px;
-
-            color: #222;
-            background: transparent;
-
-            font-size: 13px;
-
-            cursor: pointer;
-        }
-
-        .opcion-menu:hover {
-            border-color: #9db7ca;
-            background: #dcebf5;
-        }
-
-        /* ========================================= */
-        /* BARRA DE HERRAMIENTAS */
-        /* ========================================= */
-
-        .barra-herramientas {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-
-            min-height: 42px;
-            padding: 5px 8px;
-
-            border-bottom: 1px solid var(--gris-borde);
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #eeeeee,
-                    #d4d4d4
-                );
-        }
-
-        .separador {
-            width: 1px;
-            height: 27px;
-
-            margin: 0 4px;
-
-            background: #a9a9a9;
-        }
-
-        .boton-herramienta {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            min-width: 32px;
-            height: 30px;
-            padding: 0 8px;
-
-            border: 1px solid transparent;
-            border-radius: 3px;
-
-            color: #222;
-            background: transparent;
-
-            font-size: 15px;
-
-            cursor: pointer;
-        }
-
-        .boton-herramienta:hover {
-            border-color: #8caec4;
-            background:
-                linear-gradient(
-                    to bottom,
-                    #f7fcff,
-                    #cde5f5
-                );
-        }
-
-        .boton-ejecutar {
-            color: #2a6f25;
-        }
-
-        .boton-detener {
-            color: #b02525;
-        }
-
-        .conexion {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-
-            margin-left: auto;
-            padding: 5px 9px;
-
-            border: 1px solid #a7a7a7;
-            border-radius: 3px;
-
-            background: white;
-
-            font-size: 12px;
-        }
-
-        .conexion-punto {
-            width: 9px;
-            height: 9px;
-
-            border-radius: 50%;
-
-            background: #27a745;
-
-            box-shadow:
-                0 0 0 1px #116327;
-        }
-
-        /* ========================================= */
-        /* ÁREA PRINCIPAL */
-        /* ========================================= */
-
-        .area-principal {
-            display: grid;
-            grid-template-columns: 270px minmax(0, 1fr);
-
-            flex: 1;
-            min-height: 0;
-        }
-
-        /* ========================================= */
-        /* PANEL IZQUIERDO */
-        /* ========================================= */
-
-        .panel-lateral {
-            display: flex;
-            flex-direction: column;
-
-            min-width: 0;
-            min-height: 0;
-
-            border-right: 1px solid #8d8d8d;
-
-            background: var(--gris-panel);
-        }
-
-        .titulo-panel {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            min-height: 32px;
-            padding: 0 10px;
-
-            border-bottom: 1px solid #a7a7a7;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #eeeeee,
-                    #d0d0d0
-                );
-
-            color: #333;
-
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .buscador-esquemas {
-            padding: 7px;
-
-            border-bottom: 1px solid #c3c3c3;
-
-            background: #e5e5e5;
-        }
-
-        .buscador-esquemas input {
-            width: 100%;
-            padding: 6px 8px;
-
-            border: 1px solid #a3a3a3;
-            border-radius: 2px;
-
-            background: white;
-
-            font-size: 12px;
-        }
-
-        .arbol-esquemas {
-            flex: 1;
-
-            min-height: 0;
-            padding: 7px 4px;
-
-            overflow: auto;
-
-            background: white;
-
-            font-size: 13px;
-        }
-
-        .elemento-arbol {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-
-            min-height: 25px;
-            padding: 3px 5px;
-
-            border: 1px solid transparent;
-
-            white-space: nowrap;
-
-            cursor: pointer;
-        }
-
-        .elemento-arbol:hover {
-            border-color: #a6c5dc;
-            background: #e4f1fa;
-        }
-
-        .nivel-1 {
-            padding-left: 8px;
-
-            color: #2d4f67;
+            background: #ffffff;
+            color: #222222;
 
             font-weight: bold;
-        }
-
-        .nivel-2 {
-            padding-left: 27px;
-        }
-
-        .nivel-3 {
-            padding-left: 47px;
-        }
-
-        .icono-carpeta {
-            color: #d7a428;
-        }
-
-        .icono-tabla {
-            color: #2f6f9d;
-        }
-
-        .icono-procedimiento {
-            color: #875899;
-        }
-
-        .panel-informacion {
-            min-height: 145px;
-
-            border-top: 1px solid #9a9a9a;
-
-            background: #f7f7f7;
-        }
-
-        .contenido-informacion {
-            padding: 10px;
-
-            color: #555;
-
-            font-size: 12px;
-            line-height: 1.5;
-        }
-
-        .propiedad {
-            display: grid;
-            grid-template-columns: 85px 1fr;
-
-            gap: 4px;
-
-            margin-bottom: 4px;
-        }
-
-        .propiedad strong {
-            color: #333;
-        }
-
-        /* ========================================= */
-        /* ZONA CENTRAL */
-        /* ========================================= */
-
-        .zona-trabajo {
-            display: flex;
-            flex-direction: column;
-
-            min-width: 0;
-            min-height: 0;
-
-            background: white;
-        }
-
-        /* ========================================= */
-        /* PESTAÑAS */
-        /* ========================================= */
-
-        .barra-pestanas {
-            display: flex;
-            align-items: flex-end;
-
-            min-height: 34px;
-            padding: 4px 5px 0;
-
-            overflow-x: auto;
-
-            border-bottom: 1px solid #888;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #e7e7e7,
-                    #cfcfcf
-                );
-        }
-
-        .pestana {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-
-            min-width: 190px;
-            height: 30px;
-            padding: 0 10px;
-
-            border: 1px solid #999;
-            border-bottom: none;
-            border-radius: 4px 4px 0 0;
-
-            color: #333;
-            background:
-                linear-gradient(
-                    to bottom,
-                    #e7e7e7,
-                    #c9c9c9
-                );
-
-            font-size: 12px;
-
             cursor: pointer;
         }
 
-        .pestana + .pestana {
-            margin-left: 3px;
-        }
-
-        .pestana:hover {
-            background: #eeeeee;
-        }
-
-        .pestana.activa {
-            position: relative;
-            z-index: 2;
-
-            height: 31px;
-
-            color: #111;
-            background: white;
-
-            font-weight: bold;
-        }
-
-        .pestana-icono {
-            color: #2f6590;
-        }
-
-        .pestana-cerrar {
-            margin-left: auto;
-
-            color: #666;
-
-            font-size: 14px;
-        }
-
-        /* ========================================= */
-        /* EDITOR SQL */
-        /* ========================================= */
-
-        .editor-contenedor {
-            position: relative;
-
-            display: flex;
-
-            flex: 1;
-            min-height: 240px;
-
-            overflow: auto;
-
-            border-bottom: 1px solid #8f8f8f;
-
-            background: var(--fondo-editor);
-        }
-
-        .lineas {
-            flex: 0 0 auto;
-
-            min-width: 50px;
-            padding: 10px 9px 40px 5px;
-
-            border-right: 1px solid #d1d1d1;
-
-            color: #858585;
-            background: #f3f3f3;
-
-            font-family:
-                Consolas,
-                Monaco,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
-            line-height: 1.55;
-
-            text-align: right;
-
-            user-select: none;
+        button:hover {
+            background: #d8ecf8;
         }
 
         .codigo {
+            max-height: 75vh;
+            overflow: auto;
+
+            background: #ffffff;
+        }
+
+        pre {
             min-width: max-content;
             margin: 0;
-            padding: 10px 30px 40px 12px;
+            padding: 20px;
 
-            color: #202020;
-            background: white;
+            color: #111111;
+            background: #ffffff;
 
-            font-family:
-                Consolas,
-                Monaco,
-                "Courier New",
-                monospace;
-
-            font-size: 13px;
+            font-family: Consolas, Monaco, "Courier New", monospace;
+            font-size: 14px;
             line-height: 1.55;
 
-            white-space: pre;
             tab-size: 4;
         }
 
-        .codigo .comentario {
-            color: #4f8b32;
-        }
-
-        .codigo .palabra {
-            color: #0033b3;
-
-            font-weight: bold;
-        }
-
-        .codigo .tipo {
-            color: #7a3e9d;
-        }
-
-        .codigo .cadena {
-            color: #a31515;
-        }
-
-        .codigo .numero {
-            color: #1565a7;
-        }
-
-        .panel-editor {
-            display: none;
-        }
-
-        .panel-editor.activo {
-            display: contents;
-        }
-
-        /* ========================================= */
-        /* RESULTADOS */
-        /* ========================================= */
-
-        .zona-resultados {
-            display: flex;
-            flex-direction: column;
-
-            height: 235px;
-            min-height: 150px;
-
-            background: #f5f5f5;
-        }
-
-        .pestanas-resultados {
-            display: flex;
-            align-items: flex-end;
-
-            min-height: 30px;
-            padding-left: 4px;
-
-            border-bottom: 1px solid #999;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #eeeeee,
-                    #d4d4d4
-                );
-        }
-
-        .pestana-resultado {
-            height: 27px;
-            padding: 6px 13px;
-
-            border: 1px solid #999;
-            border-bottom: none;
-            border-radius: 3px 3px 0 0;
-
-            background: #e2e2e2;
-
-            font-size: 12px;
-        }
-
-        .pestana-resultado.activa {
-            background: white;
-
-            font-weight: bold;
-        }
-
-        .resultado-contenido {
-            flex: 1;
-
-            min-height: 0;
-
-            overflow: auto;
-
-            background: white;
-        }
-
-        .tabla-resultados {
-            width: 100%;
-
-            border-collapse: collapse;
-
-            font-size: 12px;
-        }
-
-        .tabla-resultados th,
-        .tabla-resultados td {
-            padding: 6px 9px;
-
-            border-right: 1px solid #bebebe;
-            border-bottom: 1px solid #c7c7c7;
-
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        .tabla-resultados th {
-            position: sticky;
-            top: 0;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #f7f7f7,
-                    #dddddd
-                );
-
-            color: #333;
-        }
-
-        .tabla-resultados tr:nth-child(even) {
-            background: #f6f9fb;
-        }
-
-        .salida-accion {
-            display: grid;
-            grid-template-columns: 75px 90px minmax(230px, 1fr);
-
-            border-bottom: 1px solid #d5d5d5;
-
-            font-family:
-                Consolas,
-                Monaco,
-                monospace;
-
-            font-size: 12px;
-        }
-
-        .salida-accion div {
-            padding: 6px 8px;
-
-            border-right: 1px solid #d5d5d5;
-        }
-
-        .salida-correcta {
-            color: var(--verde);
-        }
-
-        /* ========================================= */
-        /* BARRA DE ESTADO */
-        /* ========================================= */
-
-        .barra-estado {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            min-height: 25px;
-            padding: 0 10px;
-
-            border-top: 1px solid #a0a0a0;
-
-            color: #333;
-            background:
-                linear-gradient(
-                    to bottom,
-                    #e7e7e7,
-                    #c9c9c9
-                );
-
-            font-size: 11px;
-        }
-
-        .estado-izquierda,
-        .estado-derecha {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .estado-conectado {
-            color: #126a2d;
-
-            font-weight: bold;
-        }
-
-        /* ========================================= */
-        /* AVISO */
-        /* ========================================= */
-
         .aviso {
             position: fixed;
-            right: 18px;
-            bottom: 40px;
-            z-index: 100;
+            right: 15px;
+            bottom: 15px;
 
-            max-width: calc(100% - 36px);
             padding: 11px 15px;
 
-            border: 1px solid #6c6c6c;
-            border-radius: 3px;
+            border-radius: 5px;
 
-            color: white;
-            background: #333;
-
-            box-shadow: var(--sombra);
+            background: #24577a;
+            color: #ffffff;
 
             opacity: 0;
-            transform: translateY(12px);
-
             pointer-events: none;
 
-            transition:
-                opacity 0.2s,
-                transform 0.2s;
+            transition: opacity 0.2s;
         }
 
         .aviso.visible {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        /* ========================================= */
-        /* RESPONSIVE */
-        /* ========================================= */
-
-        @media (max-width: 850px) {
-            body {
-                overflow: auto;
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 23px;
             }
 
-            .aplicacion {
-                min-height: 100vh;
-                height: auto;
-            }
-
-            .area-principal {
-                grid-template-columns: 1fr;
-            }
-
-            .panel-lateral {
-                max-height: 270px;
-
-                border-right: none;
-                border-bottom: 1px solid #888;
-            }
-
-            .arbol-esquemas {
-                max-height: 170px;
-            }
-
-            .panel-informacion {
-                display: none;
-            }
-
-            .zona-trabajo {
-                min-height: 800px;
-            }
-
-            .editor-contenedor {
-                min-height: 430px;
-                max-height: 55vh;
-            }
-
-            .zona-resultados {
-                height: 230px;
-            }
-
-            .conexion {
-                display: none;
-            }
-        }
-
-        @media (max-width: 560px) {
-            .barra-menu {
+            nav {
+                justify-content: flex-start;
                 overflow-x: auto;
             }
 
-            .barra-herramientas {
-                overflow-x: auto;
-            }
-
-            .boton-herramienta {
-                flex: 0 0 auto;
-            }
-
-            .pestana {
-                min-width: 165px;
-            }
-
-            .codigo,
-            .lineas {
-                font-size: 11px;
-            }
-
-            .lineas {
-                min-width: 40px;
-            }
-
-            .barra-estado {
+            .titulo {
                 align-items: flex-start;
                 flex-direction: column;
-
-                padding: 5px 8px;
             }
 
-            .estado-derecha {
-                display: none;
+            button {
+                width: 100%;
             }
 
-            .controles-ventana {
-                display: none;
-            }
-
-            .titulo-programa {
+            pre {
+                padding: 15px;
                 font-size: 12px;
             }
         }
@@ -946,463 +184,30 @@
 
 <body>
 
-<div class="aplicacion">
+<header>
+    <h1>Exámenes SQL</h1>
+</header>
 
-    <!-- ========================================= -->
-    <!-- BARRA SUPERIOR -->
-    <!-- ========================================= -->
+<nav>
+    <a href="#curasano">CuraSano DB</a>
+    <a href="#dinerosbank">DinerosBank DB</a>
+</nav>
 
-    <header class="barra-titulo">
+<main>
 
-        <div class="titulo-programa">
+    <section id="curasano">
 
-            <div class="logo-mysql">
-                🐬
-            </div>
+        <div class="titulo">
+            <h2>Examen 1: CuraSano DB</h2>
 
-            <span>
-                MySQL Workbench — Local instance MySQL
-            </span>
-
+            <button onclick="copiarCodigo('codigoCuraSano')">
+                Copiar SQL
+            </button>
         </div>
 
-        <div class="controles-ventana">
+        <div class="codigo">
 
-            <button class="control-ventana">
-                —
-            </button>
-
-            <button class="control-ventana">
-                □
-            </button>
-
-            <button class="control-ventana control-cerrar">
-                ×
-            </button>
-
-        </div>
-
-    </header>
-
-    <!-- ========================================= -->
-    <!-- MENÚ -->
-    <!-- ========================================= -->
-
-    <nav class="barra-menu">
-
-        <button class="opcion-menu">
-            File
-        </button>
-
-        <button class="opcion-menu">
-            Edit
-        </button>
-
-        <button class="opcion-menu">
-            View
-        </button>
-
-        <button class="opcion-menu">
-            Query
-        </button>
-
-        <button class="opcion-menu">
-            Database
-        </button>
-
-        <button class="opcion-menu">
-            Server
-        </button>
-
-        <button class="opcion-menu">
-            Tools
-        </button>
-
-        <button class="opcion-menu">
-            Scripting
-        </button>
-
-        <button class="opcion-menu">
-            Help
-        </button>
-
-    </nav>
-
-    <!-- ========================================= -->
-    <!-- HERRAMIENTAS -->
-    <!-- ========================================= -->
-
-    <section class="barra-herramientas">
-
-        <button
-            class="boton-herramienta"
-            title="Nuevo script SQL"
-            onclick="mostrarAviso('Nuevo script SQL')"
-        >
-            📄
-        </button>
-
-        <button
-            class="boton-herramienta"
-            title="Abrir archivo SQL"
-            onclick="mostrarAviso('Abrir archivo SQL')"
-        >
-            📂
-        </button>
-
-        <button
-            class="boton-herramienta"
-            title="Guardar"
-            onclick="mostrarAviso('El contenido está guardado en la web')"
-        >
-            💾
-        </button>
-
-        <div class="separador"></div>
-
-        <button
-            class="boton-herramienta boton-ejecutar"
-            title="Ejecutar consulta"
-            onclick="ejecutarConsulta()"
-        >
-            ⚡
-        </button>
-
-        <button
-            class="boton-herramienta boton-ejecutar"
-            title="Ejecutar script completo"
-            onclick="ejecutarConsulta()"
-        >
-            ▶
-        </button>
-
-        <button
-            class="boton-herramienta boton-detener"
-            title="Detener ejecución"
-            onclick="mostrarAviso('Ejecución detenida')"
-        >
-            ■
-        </button>
-
-        <div class="separador"></div>
-
-        <button
-            class="boton-herramienta"
-            title="Copiar SQL"
-            onclick="copiarSQLActual()"
-        >
-            📋
-        </button>
-
-        <button
-            class="boton-herramienta"
-            title="Descargar SQL"
-            onclick="descargarSQLActual()"
-        >
-            ⬇
-        </button>
-
-        <button
-            class="boton-herramienta"
-            title="Buscar"
-            onclick="mostrarAviso('Usa la búsqueda del navegador')"
-        >
-            🔍
-        </button>
-
-        <div class="conexion">
-
-            <span class="conexion-punto"></span>
-
-            <span>
-                Local instance MySQL80
-            </span>
-
-        </div>
-
-    </section>
-
-    <!-- ========================================= -->
-    <!-- ÁREA PRINCIPAL -->
-    <!-- ========================================= -->
-
-    <main class="area-principal">
-
-        <!-- ===================================== -->
-        <!-- PANEL DE ESQUEMAS -->
-        <!-- ===================================== -->
-
-        <aside class="panel-lateral">
-
-            <div class="titulo-panel">
-
-                <span>
-                    Navigator
-                </span>
-
-                <span>
-                    ⟳
-                </span>
-
-            </div>
-
-            <div class="buscador-esquemas">
-
-                <input
-                    type="search"
-                    placeholder="Filter objects"
-                    oninput="filtrarEsquemas(this.value)"
-                >
-
-            </div>
-
-            <div
-                class="arbol-esquemas"
-                id="arbolEsquemas"
-            >
-
-                <div class="elemento-arbol nivel-1">
-                    ▾
-                    <span class="icono-carpeta">🗂</span>
-                    SCHEMAS
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-1 esquema"
-                    data-esquema="curasano"
-                    onclick="abrirPestana('curasano')"
-                >
-                    ▾
-                    <span class="icono-carpeta">◫</span>
-                    CuraSano_db
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-2 esquema"
-                    data-esquema="curasano"
-                >
-                    ▾
-                    <span class="icono-carpeta">📁</span>
-                    Tables
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="curasano"
-                >
-                    <span class="icono-tabla">▦</span>
-                    Consultas
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="curasano"
-                >
-                    <span class="icono-tabla">▦</span>
-                    Medicos
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="curasano"
-                >
-                    <span class="icono-tabla">▦</span>
-                    Salas
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-2 esquema"
-                    data-esquema="curasano"
-                >
-                    <span class="icono-procedimiento">ƒ</span>
-                    Stored Procedures
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="curasano"
-                >
-                    <span class="icono-procedimiento">⚙</span>
-                    ultimaConsultaMedico
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-1 esquema"
-                    data-esquema="dinerosbank"
-                    onclick="abrirPestana('dinerosbank')"
-                >
-                    ▾
-                    <span class="icono-carpeta">◫</span>
-                    dinerosBank_db
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-2 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    ▾
-                    <span class="icono-carpeta">📁</span>
-                    Tables
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    <span class="icono-tabla">▦</span>
-                    Empleados
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    <span class="icono-tabla">▦</span>
-                    Pagos
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    <span class="icono-tabla">▦</span>
-                    Prestamos
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-2 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    <span class="icono-procedimiento">ƒ</span>
-                    Functions
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    <span class="icono-procedimiento">⚙</span>
-                    totalPrestamosAprobados
-                </div>
-
-                <div
-                    class="elemento-arbol nivel-3 esquema"
-                    data-esquema="dinerosbank"
-                >
-                    <span class="icono-procedimiento">⚙</span>
-                    totalPrestamosPorEstado
-                </div>
-
-            </div>
-
-            <div class="panel-informacion">
-
-                <div class="titulo-panel">
-                    Information
-                </div>
-
-                <div class="contenido-informacion">
-
-                    <div class="propiedad">
-                        <strong>Author:</strong>
-                        <span>Isaac</span>
-                    </div>
-
-                    <div class="propiedad">
-                        <strong>Connection:</strong>
-                        <span>Local instance MySQL80</span>
-                    </div>
-
-                    <div class="propiedad">
-                        <strong>Version:</strong>
-                        <span>MySQL 8.0</span>
-                    </div>
-
-                    <div class="propiedad">
-                        <strong>Status:</strong>
-                        <span class="estado-conectado">
-                            Connected
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </aside>
-
-        <!-- ===================================== -->
-        <!-- ZONA DE TRABAJO -->
-        <!-- ===================================== -->
-
-        <section class="zona-trabajo">
-
-            <!-- PESTAÑAS SQL -->
-
-            <div class="barra-pestanas">
-
-                <button
-                    class="pestana activa"
-                    id="pestana-curasano"
-                    onclick="abrirPestana('curasano')"
-                >
-
-                    <span class="pestana-icono">
-                        SQL
-                    </span>
-
-                    <span>
-                        CuraSano_db.sql
-                    </span>
-
-                    <span class="pestana-cerrar">
-                        ×
-                    </span>
-
-                </button>
-
-                <button
-                    class="pestana"
-                    id="pestana-dinerosbank"
-                    onclick="abrirPestana('dinerosbank')"
-                >
-
-                    <span class="pestana-icono">
-                        SQL
-                    </span>
-
-                    <span>
-                        dinerosBank_db.sql
-                    </span>
-
-                    <span class="pestana-cerrar">
-                        ×
-                    </span>
-
-                </button>
-
-            </div>
-
-            <!-- EDITOR -->
-
-            <div class="editor-contenedor">
-
-                <!-- CURASANO -->
-
-                <div
-                    class="panel-editor activo"
-                    id="panel-curasano"
-                >
-
-                    <div
-                        class="lineas"
-                        id="lineas-curasano"
-                    ></div>
-
-                    <pre
-                        class="codigo"
-                        id="codigo-curasano"
-                    >-- =====================================================
+<pre><code id="codigoCuraSano">-- =====================================================
 -- EXAMEN 1: CURASANO_DB
 -- =====================================================
 
@@ -1457,7 +262,8 @@ DROP COLUMN turno;
 -- Consultas
 -- =====================================================
 
--- 1. Mostrar identificador, fecha y código de sala
+-- 1. Mostrar identificador, fecha y código de sala,
+-- ordenado por fecha descendente
 
 SELECT c.idConsulta, c.fechaHora, s.codigo
 FROM Consultas c
@@ -1510,26 +316,24 @@ DELIMITER ;
 -- Llamada de prueba
 
 CALL ultimaConsultaMedico(1, @ultimaConsulta);
-SELECT @ultimaConsulta;</pre>
+SELECT @ultimaConsulta;</code></pre>
 
-                </div>
+        </div>
+    </section>
 
-                <!-- DINEROSBANK -->
+    <section id="dinerosbank">
 
-                <div
-                    class="panel-editor"
-                    id="panel-dinerosbank"
-                >
+        <div class="titulo">
+            <h2>Examen 2: DinerosBank DB</h2>
 
-                    <div
-                        class="lineas"
-                        id="lineas-dinerosbank"
-                    ></div>
+            <button onclick="copiarCodigo('codigoDinerosBank')">
+                Copiar SQL
+            </button>
+        </div>
 
-                    <pre
-                        class="codigo"
-                        id="codigo-dinerosbank"
-                    >-- =====================================================
+        <div class="codigo">
+
+<pre><code id="codigoDinerosBank">-- =====================================================
 -- EXAMEN 2: DINEROSBANK_DB
 -- =====================================================
 
@@ -1588,22 +392,17 @@ WHERE importe &gt; 50000
 AND estado = 'aprobado'
 ORDER BY importe ASC;
 
--- 2. Empleados con importe total de préstamos gestionados
+-- 2. Empleados con importe total de préstamos gestionados,
+-- incluyendo empleados sin préstamos
 
-SELECT
-    e.idEmpleado,
-    e.nombre,
-    SUM(p.importe) AS total_importe
+SELECT e.idEmpleado, e.nombre, SUM(p.importe) AS total_importe
 FROM Empleados e
-LEFT JOIN Prestamos p
-    ON e.idEmpleado = p.idEmpleado
+LEFT JOIN Prestamos p ON e.idEmpleado = p.idEmpleado
 GROUP BY e.idEmpleado, e.nombre;
 
 -- 3. Fecha del pago más reciente para cada préstamo
 
-SELECT
-    idPrestamo,
-    MAX(fechaPago) AS fecha_pago_mas_reciente
+SELECT idPrestamo, MAX(fechaPago) AS fecha_pago_mas_reciente
 FROM Pagos
 GROUP BY idPrestamo;
 
@@ -1614,7 +413,8 @@ WHERE metodo = 'efectivo';
 
 -- =====================================================
 -- EJERCICIO 03
--- Función almacenada
+-- Función almacenada 1
+-- Total de préstamos aprobados de un empleado
 -- =====================================================
 
 DELIMITER $$
@@ -1638,10 +438,13 @@ END $$
 
 DELIMITER ;
 
+-- Consulta de prueba
+
 SELECT totalPrestamosAprobados(1);
 
 -- =====================================================
 -- FUNCIÓN ALTERNATIVA
+-- Total de préstamos de un empleado para un estado determinado
 -- =====================================================
 
 DELIMITER $$
@@ -1666,10 +469,13 @@ END $$
 
 DELIMITER ;
 
+-- Consulta de prueba
+
 SELECT totalPrestamosPorEstado(1, 'aprobado');
 
 -- =====================================================
 -- PROCEDIMIENTO ALMACENADO ALTERNATIVO
+-- Total de préstamos por empleado y estado usando OUT
 -- =====================================================
 
 DELIMITER $$
@@ -1689,489 +495,48 @@ END $$
 
 DELIMITER ;
 
+-- Llamada de prueba
+
 CALL totalPrestamosEstado(1, 'aprobado', @total);
-SELECT @total;</pre>
-
-                </div>
-
-            </div>
-
-            <!-- RESULTADOS -->
-
-            <section class="zona-resultados">
-
-                <div class="pestanas-resultados">
-
-                    <div class="pestana-resultado activa">
-                        Result Grid
-                    </div>
-
-                    <div class="pestana-resultado">
-                        Form Editor
-                    </div>
-
-                    <div class="pestana-resultado">
-                        Field Types
-                    </div>
-
-                    <div class="pestana-resultado">
-                        Execution Plan
-                    </div>
-
-                </div>
-
-                <div
-                    class="resultado-contenido"
-                    id="resultadoContenido"
-                >
-
-                    <table class="tabla-resultados">
-
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Action</th>
-                                <th>Message</th>
-                                <th>Duration</th>
-                                <th>Fetch</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="tablaResultado">
-
-                            <tr>
-                                <td>1</td>
-                                <td class="salida-correcta">
-                                    SELECT
-                                </td>
-                                <td>
-                                    Query completed successfully
-                                </td>
-                                <td>
-                                    0.001 sec
-                                </td>
-                                <td>
-                                    0.000 sec
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td class="salida-correcta">
-                                    CREATE
-                                </td>
-                                <td>
-                                    Script loaded and ready to execute
-                                </td>
-                                <td>
-                                    0.002 sec
-                                </td>
-                                <td>
-                                    —
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-        </section>
-
-    </main>
-
-    <!-- ========================================= -->
-    <!-- ESTADO -->
-    <!-- ========================================= -->
-
-    <footer class="barra-estado">
-
-        <div class="estado-izquierda">
-
-            <span class="estado-conectado">
-                ● Connected
-            </span>
-
-            <span>
-                Local instance MySQL80
-            </span>
-
-            <span id="estadoBaseDatos">
-                CuraSano_db
-            </span>
+SELECT @total;</code></pre>
 
         </div>
+    </section>
 
-        <div class="estado-derecha">
+</main>
 
-            <span>
-                Read/Write
-            </span>
-
-            <span>
-                UTF-8
-            </span>
-
-            <span>
-                Ln 1, Col 1
-            </span>
-
-            <span>
-                Autor: Isaac
-            </span>
-
-        </div>
-
-    </footer>
-
+<div class="aviso" id="aviso">
+    Código SQL copiado
 </div>
 
-<div
-    class="aviso"
-    id="aviso"
-    role="status"
-    aria-live="polite"
-></div>
-
 <script>
-    let pestanaActual = "curasano";
-
-    function abrirPestana(nombre) {
-        pestanaActual = nombre;
-
-        const pestanas =
-            document.querySelectorAll(".pestana");
-
-        const paneles =
-            document.querySelectorAll(".panel-editor");
-
-        pestanas.forEach(function (pestana) {
-            pestana.classList.remove("activa");
-        });
-
-        paneles.forEach(function (panel) {
-            panel.classList.remove("activo");
-        });
-
-        document
-            .getElementById("pestana-" + nombre)
-            .classList
-            .add("activa");
-
-        document
-            .getElementById("panel-" + nombre)
-            .classList
-            .add("activo");
-
-        const estadoBaseDatos =
-            document.getElementById(
-                "estadoBaseDatos"
-            );
-
-        if (nombre === "curasano") {
-            estadoBaseDatos.textContent =
-                "CuraSano_db";
-        } else {
-            estadoBaseDatos.textContent =
-                "dinerosBank_db";
-        }
-
-        actualizarResultado(nombre);
-    }
-
-    function obtenerCodigoActual() {
-        const elemento =
-            document.getElementById(
-                "codigo-" + pestanaActual
-            );
-
-        return elemento.textContent;
-    }
-
-    async function copiarSQLActual() {
-        const codigo = obtenerCodigoActual();
+    async function copiarCodigo(id) {
+        const codigo = document.getElementById(id).textContent;
 
         try {
-            await navigator.clipboard.writeText(
-                codigo
-            );
-
-            mostrarAviso(
-                "Código SQL copiado al portapapeles"
-            );
+            await navigator.clipboard.writeText(codigo);
         } catch (error) {
-            const areaTexto =
-                document.createElement(
-                    "textarea"
-                );
+            const area = document.createElement("textarea");
 
-            areaTexto.value = codigo;
+            area.value = codigo;
+            document.body.appendChild(area);
 
-            document.body.appendChild(
-                areaTexto
-            );
-
-            areaTexto.select();
-
+            area.select();
             document.execCommand("copy");
 
-            areaTexto.remove();
-
-            mostrarAviso(
-                "Código SQL copiado al portapapeles"
-            );
-        }
-    }
-
-    function descargarSQLActual() {
-        const codigo = obtenerCodigoActual();
-
-        let nombreArchivo;
-
-        if (pestanaActual === "curasano") {
-            nombreArchivo =
-                "CuraSano_db.sql";
-        } else {
-            nombreArchivo =
-                "dinerosBank_db.sql";
+            area.remove();
         }
 
-        const archivo =
-            new Blob(
-                [codigo],
-                {
-                    type:
-                        "text/sql;charset=utf-8"
-                }
-            );
-
-        const enlace =
-            document.createElement("a");
-
-        const direccion =
-            URL.createObjectURL(archivo);
-
-        enlace.href = direccion;
-        enlace.download = nombreArchivo;
-
-        document.body.appendChild(enlace);
-
-        enlace.click();
-        enlace.remove();
-
-        URL.revokeObjectURL(direccion);
-
-        mostrarAviso(
-            nombreArchivo + " descargado"
-        );
-    }
-
-    function ejecutarConsulta() {
-        const tabla =
-            document.getElementById(
-                "tablaResultado"
-            );
-
-        const baseDatos =
-            pestanaActual === "curasano"
-                ? "CuraSano_db"
-                : "dinerosBank_db";
-
-        tabla.innerHTML = `
-            <tr>
-                <td>1</td>
-
-                <td class="salida-correcta">
-                    EXECUTE
-                </td>
-
-                <td>
-                    Script de ${baseDatos}
-                    ejecutado correctamente
-                </td>
-
-                <td>
-                    0.014 sec
-                </td>
-
-                <td>
-                    0.001 sec
-                </td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-
-                <td class="salida-correcta">
-                    SUCCESS
-                </td>
-
-                <td>
-                    Query OK, 0 rows affected
-                </td>
-
-                <td>
-                    0.003 sec
-                </td>
-
-                <td>
-                    —
-                </td>
-            </tr>
-        `;
-
-        mostrarAviso(
-            "Script ejecutado correctamente"
-        );
-    }
-
-    function actualizarResultado(nombre) {
-        const tabla =
-            document.getElementById(
-                "tablaResultado"
-            );
-
-        const baseDatos =
-            nombre === "curasano"
-                ? "CuraSano_db"
-                : "dinerosBank_db";
-
-        tabla.innerHTML = `
-            <tr>
-                <td>1</td>
-
-                <td class="salida-correcta">
-                    OPEN
-                </td>
-
-                <td>
-                    Script ${baseDatos}
-                    cargado correctamente
-                </td>
-
-                <td>
-                    0.001 sec
-                </td>
-
-                <td>
-                    —
-                </td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-
-                <td class="salida-correcta">
-                    READY
-                </td>
-
-                <td>
-                    Ready to execute SQL statements
-                </td>
-
-                <td>
-                    0.000 sec
-                </td>
-
-                <td>
-                    —
-                </td>
-            </tr>
-        `;
-    }
-
-    function crearNumerosDeLinea() {
-        const nombres = [
-            "curasano",
-            "dinerosbank"
-        ];
-
-        nombres.forEach(function (nombre) {
-            const codigo =
-                document.getElementById(
-                    "codigo-" + nombre
-                );
-
-            const lineas =
-                document.getElementById(
-                    "lineas-" + nombre
-                );
-
-            const cantidad =
-                codigo.textContent
-                    .split("\n")
-                    .length;
-
-            let numeros = "";
-
-            for (
-                let numero = 1;
-                numero <= cantidad;
-                numero++
-            ) {
-                numeros += numero + "\n";
-            }
-
-            lineas.textContent = numeros;
-        });
-    }
-
-    function filtrarEsquemas(texto) {
-        const elementos =
-            document.querySelectorAll(
-                ".esquema"
-            );
-
-        const busqueda =
-            texto
-                .trim()
-                .toLowerCase();
-
-        elementos.forEach(function (elemento) {
-            const contenido =
-                elemento
-                    .textContent
-                    .toLowerCase();
-
-            if (
-                contenido.includes(busqueda)
-                || busqueda === ""
-            ) {
-                elemento.style.display = "flex";
-            } else {
-                elemento.style.display = "none";
-            }
-        });
-    }
-
-    function mostrarAviso(mensaje) {
-        const aviso =
-            document.getElementById("aviso");
-
-        aviso.textContent = mensaje;
+        const aviso = document.getElementById("aviso");
 
         aviso.classList.add("visible");
 
-        window.clearTimeout(
-            window.temporizadorAviso
-        );
-
-        window.temporizadorAviso =
-            window.setTimeout(
-                function () {
-                    aviso.classList.remove(
-                        "visible"
-                    );
-                },
-                2200
-            );
+        setTimeout(function () {
+            aviso.classList.remove("visible");
+        }, 1800);
     }
-
-    crearNumerosDeLinea();
 </script>
 
 </body>
 </html>
+```
