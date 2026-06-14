@@ -1,202 +1,1447 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111827">
-  <title>Python 2º ASIR - Parte práctica</title>
-  <style>
-    :root{--bg:#0b1020;--panel:#111827;--panel2:#172033;--text:#f3f4f6;--muted:#9ca3af;--blue:#60a5fa;--green:#34d399;--red:#f87171;--border:#2b364b;--code:#070b14}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(96,165,250,.12),transparent 34%),var(--bg);color:var(--text);line-height:1.55}
-    header{position:sticky;top:0;z-index:10;background:rgba(11,16,32,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-    .top{max-width:1050px;margin:auto;padding:15px 18px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}.top h1{margin:0;font-size:1.15rem}.top p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
-    .progressBox{width:min(330px,100%)}.progressText{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem;margin-bottom:5px}.progress{height:9px;background:#070b14;border:1px solid var(--border);border-radius:999px;overflow:hidden}.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--green));transition:.25s}
-    main{max-width:1050px;margin:auto;padding:26px 18px 60px}.hero,.patterns{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:0 14px 36px rgba(0,0,0,.22)}.hero h2,.patterns h2{margin-top:0}.warn{margin-top:15px;border-left:4px solid var(--red);background:rgba(248,113,113,.08);border-radius:9px;padding:13px 15px}.warn strong{color:#fecaca}
-    .toolbar{display:grid;grid-template-columns:1fr auto;gap:10px;margin:20px 0}input[type=search]{width:100%;padding:13px 14px;border:1px solid var(--border);border-radius:11px;background:var(--panel);color:var(--text);font-size:1rem;outline:none}input[type=search]:focus{border-color:var(--blue)}button{border:0;border-radius:9px;padding:10px 13px;font-weight:750;cursor:pointer}.toggle{color:var(--text);background:#253047;border:1px solid var(--border)}
-    .grid{display:grid;gap:15px}.exercise{background:var(--panel);border:1px solid var(--border);border-radius:15px;overflow:hidden}.exercise.exam{border-color:rgba(52,211,153,.75)}.head{padding:17px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.head h3{margin:0 0 5px;font-size:1.04rem}.head p{margin:0;color:#d1d5db}.badge{display:inline-block;margin-top:8px;padding:3px 8px;border-radius:999px;background:var(--green);color:#052e26;font-size:.73rem;font-weight:800}.doneLabel{white-space:nowrap;color:var(--muted);font-size:.84rem;display:flex;gap:6px;align-items:center}.doneLabel input{width:18px;height:18px;accent-color:var(--green)}details{border-top:1px solid var(--border)}summary{cursor:pointer;list-style:none;padding:13px 17px;font-weight:800;color:#bfdbfe;background:rgba(255,255,255,.015)}summary::-webkit-details-marker{display:none}.solution{padding:0 17px 17px}.code{position:relative;margin-top:13px}pre{margin:0;overflow:auto;padding:17px;border-radius:11px;background:var(--code);border:1px solid #1d293d;color:#e5e7eb;font-family:Consolas,"Cascadia Code",monospace;font-size:.89rem;line-height:1.55}.copy{position:absolute;right:9px;top:9px;padding:6px 9px;background:#1f2937;color:var(--text);border:1px solid #374151;font-size:.76rem}.tip{color:var(--muted);font-size:.88rem;margin:10px 0 0}.hidden{display:none!important}
-    .patterns{margin-top:26px}.patternGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:12px}.pattern{background:var(--panel);border:1px solid var(--border);border-radius:11px;padding:13px}.pattern h3{margin:0 0 9px;font-size:.96rem}footer{text-align:center;color:var(--muted);font-size:.83rem;margin-top:25px}
-    @media(max-width:650px){.toolbar{grid-template-columns:1fr}.head{flex-direction:column}.doneLabel{white-space:normal}.progressBox{width:100%}}
-  </style>
-</head>
-<body>
-<header>
-  <div class="top">
-    <div><h1>Python 2º ASIR · Parte práctica</h1><p>Banco completo de ejercicios</p></div>
-    <div class="progressBox"><div class="progressText"><span>Progreso</span><span id="progressText">0 de 12</span></div><div class="progress"><div id="progressBar"></div></div></div>
+  <meta name="theme-color" content="#111827">  <title>Python 2º ASIR - Parte práctica</title>  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #111827;
+      --panel2: #172033;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --blue: #60a5fa;
+      --green: #34d399;
+      --red: #f87171;
+      --border: #2b364b;
+      --code: #070b14;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(
+          circle at top left,
+          rgba(96, 165, 250, 0.12),
+          transparent 34%
+        ),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 16, 32, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .top {
+      max-width: 1050px;
+      margin: auto;
+      padding: 15px 18px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .top h1 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .top p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .progressBox {
+      width: min(330px, 100%);
+    }
+
+    .progressText {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-bottom: 5px;
+    }
+
+    .progress {
+      height: 9px;
+      background: var(--code);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress div {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      transition: 0.25s;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 26px 18px 60px;
+    }
+
+    .hero,
+    .patterns {
+      background: linear-gradient(145deg, var(--panel2), var(--panel));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    .hero h2,
+    .patterns h2 {
+      margin-top: 0;
+    }
+
+    .warn {
+      margin-top: 15px;
+      border-left: 4px solid var(--red);
+      background: rgba(248, 113, 113, 0.08);
+      border-radius: 9px;
+      padding: 13px 15px;
+    }
+
+    .warn strong {
+      color: #fecaca;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    input[type="search"] {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--panel);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input[type="search"]:focus {
+      border-color: var(--blue);
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 10px 13px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .toggle {
+      color: var(--text);
+      background: #253047;
+      border: 1px solid var(--border);
+    }
+
+    .copyAll {
+      color: #052e26;
+      background: var(--green);
+      border: 1px solid #6ee7b7;
+    }
+
+    .sectionTitle {
+      margin: 26px 0 12px;
+      font-size: 1.2rem;
+    }
+
+    .sectionText {
+      margin: -5px 0 14px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 15px;
+    }
+
+    .exercise {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    .exercise.exam {
+      border-color: rgba(52, 211, 153, 0.75);
+      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.08);
+    }
+
+    .head {
+      padding: 17px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .head h3 {
+      margin: 0 0 5px;
+      font-size: 1.04rem;
+    }
+
+    .head p {
+      margin: 0;
+      color: #d1d5db;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--green);
+      color: #052e26;
+      font-size: 0.73rem;
+      font-weight: 800;
+    }
+
+    .doneLabel {
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 0.84rem;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .doneLabel input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--green);
+    }
+
+    details {
+      border-top: 1px solid var(--border);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 13px 17px;
+      font-weight: 800;
+      color: #bfdbfe;
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .solution {
+      padding: 0 17px 17px;
+    }
+
+    .code {
+      position: relative;
+      margin-top: 13px;
+    }
+
+    pre {
+      margin: 0;
+      overflow: auto;
+      padding: 17px;
+      border-radius: 11px;
+      background: var(--code);
+      border: 1px solid #1d293d;
+      color: #e5e7eb;
+      font-family: Consolas, "Cascadia Code", monospace;
+      font-size: 0.89rem;
+      line-height: 1.55;
+    }
+
+    .copy {
+      position: absolute;
+      right: 9px;
+      top: 9px;
+      padding: 6px 9px;
+      background: #1f2937;
+      color: var(--text);
+      border: 1px solid #374151;
+      font-size: 0.76rem;
+    }
+
+    .tip {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin: 10px 0 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .patterns {
+      margin-top: 26px;
+    }
+
+    .patternGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+      gap: 12px;
+    }
+
+    .pattern {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px;
+    }
+
+    .pattern h3 {
+      margin: 0 0 9px;
+      font-size: 0.96rem;
+    }
+
+    .notice {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 20;
+      max-width: calc(100% - 32px);
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: var(--green);
+      color: #052e26;
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: 0.2s;
+    }
+
+    .notice.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.83rem;
+      margin-top: 25px;
+    }
+
+    @media (max-width: 760px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar button {
+        width: 100%;
+      }
+
+      .head {
+        flex-direction: column;
+      }
+
+      .doneLabel {
+        white-space: normal;
+      }
+
+      .progressBox {
+        width: 100%;
+      }
+    }
+  </style></head><body><header>
+  <div class="top"><div>
+  <h1>Python 2º ASIR · Parte práctica</h1>
+  <p>Primero los 3 ejercicios del examen real y después los demás.</p>
+</div>
+
+<div class="progressBox">
+
+  <div class="progressText">
+    <span>Progreso</span>
+    <span id="progressText">0 de 13</span>
   </div>
-</header>
-<main>
-  <section class="hero">
-    <h2>Guía práctica completa</h2>
-    <p>Incluye los 12 ejercicios del banco práctico y el ejercicio extra de contar la letra «a» que apareció en el examen.</p>
-    <div class="warn"><strong>Importante:</strong> no uses <code>sum()</code>, <code>max()</code>, <code>min()</code>, <code>count()</code> ni otras funciones automáticas. Resuelve con <code>for</code>, <code>while</code>, <code>if</code>, listas y acumuladores.</div>
-  </section>
 
-  <div class="toolbar"><input id="search" type="search" placeholder="Buscar: factorial, lista, suma, primo..."><button id="toggleAll" class="toggle">Mostrar todas las soluciones</button></div>
+  <div class="progress">
+    <div id="progressBar"></div>
+  </div>
 
-  <section class="grid" id="list">
-    <article class="exercise" data-search="positivo negativo cero condicional"><div class="head"><div><h3>Ejercicio 1</h3><p>Solicita un número e indica si es positivo, negativo o cero.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>numero = int(input("Introduce un número: "))
+</div>
 
-if numero &gt; 0:
-    print("El número es positivo")
-elif numero &lt; 0:
-    print("El número es negativo")
-else:
-    print("El número es cero")</code></pre></div></div></details></article>
+  </div>
+</header><main>  <section class="hero"><h2>Guía práctica completa</h2>
 
-    <article class="exercise" data-search="dos numeros mayor iguales"><div class="head"><div><h3>Ejercicio 2</h3><p>Pide dos números y muestra cuál es mayor o si son iguales.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>numero1 = int(input("Introduce el primer número: "))
-numero2 = int(input("Introduce el segundo número: "))
+<p>
+  El botón «Copiar todos los ejercicios» copia primero los tres ejercicios
+  de la parte práctica del examen real y después los diez ejercicios
+  restantes.
+</p>
 
-if numero1 &gt; numero2:
-    print("El mayor es:", numero1)
-elif numero2 &gt; numero1:
-    print("El mayor es:", numero2)
-else:
-    print("Los números son iguales")</code></pre></div></div></details></article>
+<div class="warn">
+  <strong>Importante:</strong>
+  no uses
+  <code>sum()</code>,
+  <code>max()</code>,
+  <code>min()</code>,
+  <code>count()</code>
+  ni otras funciones automáticas.
 
-    <article class="exercise" data-search="nota suspenso aprobado notable sobresaliente"><div class="head"><div><h3>Ejercicio 3</h3><p>Pide una nota de 0 a 10 y muestra su calificación.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>nota = float(input("Introduce una nota de 0 a 10: "))
+  Resuelve con
+  <code>for</code>,
+  <code>while</code>,
+  <code>if</code>,
+  listas y acumuladores.
+</div>
 
-if nota &lt; 0 or nota &gt; 10:
-    print("Nota no válida")
-elif nota &lt; 5:
-    print("Suspenso")
-elif nota &lt; 7:
-    print("Aprobado")
-elif nota &lt; 9:
-    print("Notable")
-else:
-    print("Sobresaliente")</code></pre></div></div></details></article>
+  </section>  <div class="toolbar"><input
+  id="search"
+  type="search"
+  placeholder="Buscar: factorial, lista, suma, primo..."
+  aria-label="Buscar ejercicios"
+>
 
-    <article class="exercise" data-search="bucle uno diez range"><div class="head"><div><h3>Ejercicio 4</h3><p>Muestra los números del 1 al 10 utilizando un bucle.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>for numero in range(1, 11):
-    print(numero)</code></pre></div></div></details></article>
+<button id="copyAll" class="copyAll" type="button">
+  Copiar todos los ejercicios
+</button>
 
-    <article class="exercise exam" data-search="suma uno cien acumulador examen"><div class="head"><div><h3>Ejercicio 5</h3><p>Calcula la suma de los números del 1 al 100.</p><span class="badge">Salió en el examen</span></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>suma = 0
+<button id="toggleAll" class="toggle" type="button">
+  Mostrar todas las soluciones
+</button>
+
+  </div>  <h2 class="sectionTitle">Parte práctica del examen real</h2>  <p class="sectionText">
+    Estos tres ejercicios se copian primero.
+  </p>  <section class="grid" id="list"><!-- EJERCICIO 1 DEL EXAMEN REAL -->
+
+<article
+  class="exercise exam"
+  data-search="examen ejercicio 1 suma uno cien acumulador"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 1 del examen real</h3>
+
+      <p>
+        Calcula la suma de los números del 1 al 100.
+      </p>
+
+      <span class="badge">
+        Examen real · 0,5 puntos
+      </span>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 1 del examen real">suma = 0
 
 for numero in range(1, 101):
-    suma = suma + numero
+suma = suma + numero
 
-print("La suma es:", suma)</code></pre></div><p class="tip">La variable acumuladora comienza en 0.</p></div></details></article>
+print("La suma es:", suma)</code></pre>
 
-    <article class="exercise" data-search="while cero suma numeros"><div class="head"><div><h3>Ejercicio 6</h3><p>Solicita números hasta introducir 0 y muestra la suma total.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>suma = 0
+      </div>
+
+      <p class="tip">
+        La variable acumuladora comienza en 0.
+      </p>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 2 DEL EXAMEN REAL -->
+
+<article
+  class="exercise exam"
+  data-search="examen ejercicio 2 lista mayor valor"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 2 del examen real</h3>
+
+      <p>
+        Crea una lista de números y muestra el mayor valor.
+      </p>
+
+      <span class="badge">
+        Examen real · 1 punto
+      </span>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 2 del examen real">numeros = [5, 12, 3, 20, 8]
+
+mayor = numeros[0]
+
+for numero in numeros:
+if numero > mayor:
+mayor = numero
+
+print("El mayor valor es:", mayor)</code></pre>
+
+      </div>
+
+      <p class="tip">
+        Debe existir una lista. No uses <code>max()</code>.
+      </p>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 3 DEL EXAMEN REAL -->
+
+<article
+  class="exercise exam"
+  data-search="examen ejercicio 3 palabra letra a contar"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 3 del examen real</h3>
+
+      <p>
+        Pide una palabra y muestra cuántas veces aparece la letra «a».
+      </p>
+
+      <span class="badge">
+        Examen real · 1 punto
+      </span>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 3 del examen real">palabra = input("Introduce una palabra: ")
+
+contador = 0
+
+for letra in palabra:
+if letra == "a":
+contador = contador + 1
+
+print("La letra a aparece", contador, "veces")</code></pre>
+
+      </div>
+
+      <p class="tip">
+        No uses <code>palabra.count("a")</code>.
+      </p>
+
+    </div>
+
+  </details>
+
+</article>
+
+<h2 class="sectionTitle">
+  Banco complementario
+</h2>
+
+<!-- EJERCICIO 4 -->
+
+<article
+  class="exercise"
+  data-search="positivo negativo cero condicional"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 4</h3>
+
+      <p>
+        Solicita un número e indica si es positivo, negativo o cero.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 4">numero = int(input("Introduce un número: "))
+
+if numero > 0:
+print("El número es positivo")
+elif numero < 0:
+print("El número es negativo")
+else:
+print("El número es cero")</code></pre>
+
+      </div>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 5 -->
+
+<article
+  class="exercise"
+  data-search="dos numeros mayor iguales"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 5</h3>
+
+      <p>
+        Pide dos números y muestra cuál es mayor o si son iguales.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 5">numero1 = int(input("Introduce el primer número: "))
+
+numero2 = int(input("Introduce el segundo número: "))
+
+if numero1 > numero2:
+print("El mayor es:", numero1)
+elif numero2 > numero1:
+print("El mayor es:", numero2)
+else:
+print("Los números son iguales")</code></pre>
+
+      </div>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 6 -->
+
+<article
+  class="exercise"
+  data-search="nota suspenso aprobado notable sobresaliente"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 6</h3>
+
+      <p>
+        Pide una nota de 0 a 10 y muestra su calificación.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 6">nota = float(input("Introduce una nota de 0 a 10: "))
+
+if nota < 0 or nota > 10:
+print("Nota no válida")
+elif nota < 5:
+print("Suspenso")
+elif nota < 7:
+print("Aprobado")
+elif nota < 9:
+print("Notable")
+else:
+print("Sobresaliente")</code></pre>
+
+      </div>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 7 -->
+
+<article
+  class="exercise"
+  data-search="bucle uno diez range"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 7</h3>
+
+      <p>
+        Muestra los números del 1 al 10 utilizando un bucle.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 7">for numero in range(1, 11):
+print(numero)</code></pre>
+
+      </div>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 8 -->
+
+<article
+  class="exercise"
+  data-search="while cero suma numeros"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 8</h3>
+
+      <p>
+        Solicita números hasta introducir 0 y muestra la suma total.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 8">suma = 0
+
 numero = int(input("Introduce un número: "))
 
 while numero != 0:
-    suma = suma + numero
-    numero = int(input("Introduce otro número: "))
+suma = suma + numero
+numero = int(input("Introduce otro número: "))
 
-print("La suma total es:", suma)</code></pre></div></div></details></article>
+print("La suma total es:", suma)</code></pre>
 
-    <article class="exercise" data-search="funcion factorial multiplicacion"><div class="head"><div><h3>Ejercicio 7</h3><p>Define una función que reciba un número y devuelva su factorial.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>def factorial(numero):
-    resultado = 1
+      </div>
 
-    for i in range(1, numero + 1):
-        resultado = resultado * i
+    </div>
 
-    return resultado
+  </details>
 
+</article>
+
+<!-- EJERCICIO 9 -->
+
+<article
+  class="exercise"
+  data-search="funcion factorial multiplicacion"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 9</h3>
+
+      <p>
+        Define una función que reciba un número y devuelva su factorial.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 9">def factorial(numero):
+resultado = 1
+
+for i in range(1, numero + 1):
+    resultado = resultado * i
+
+return resultado
 
 numero = int(input("Introduce un número: "))
-print("El factorial es:", factorial(numero))</code></pre></div></div></details></article>
 
-    <article class="exercise" data-search="funcion primo divisor modulo"><div class="head"><div><h3>Ejercicio 8</h3><p>Define una función que determine si un número es primo.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>def es_primo(numero):
-    if numero &lt;= 1:
+print("El factorial es:", factorial(numero))</code></pre>
+
+      </div>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 10 -->
+
+<article
+  class="exercise"
+  data-search="funcion primo divisor modulo"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 10</h3>
+
+      <p>
+        Define una función que determine si un número es primo.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 10">def es_primo(numero):
+if numero &lt;= 1:
+    return False
+
+for divisor in range(2, numero):
+    if numero % divisor == 0:
         return False
 
-    for divisor in range(2, numero):
-        if numero % divisor == 0:
-            return False
-
-    return True
-
+return True
 
 numero = int(input("Introduce un número: "))
 
 if es_primo(numero):
-    print("El número es primo")
+print("El número es primo")
 else:
-    print("El número no es primo")</code></pre></div></div></details></article>
+print("El número no es primo")</code></pre>
 
-    <article class="exercise" data-search="cadena caracteres contar longitud"><div class="head"><div><h3>Ejercicio 9</h3><p>Pide una cadena y muestra cuántos caracteres tiene.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>cadena = input("Introduce una cadena: ")
+      </div>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 11 -->
+
+<article
+  class="exercise"
+  data-search="cadena caracteres contar longitud"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 11</h3>
+
+      <p>
+        Pide una cadena y muestra cuántos caracteres tiene.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 11">cadena = input("Introduce una cadena: ")
+
 contador = 0
 
 for caracter in cadena:
-    contador = contador + 1
+contador = contador + 1
 
-print("La cadena tiene", contador, "caracteres")</code></pre></div><p class="tip">Se cuenta manualmente, sin usar <code>len()</code>.</p></div></details></article>
+print("La cadena tiene", contador, "caracteres")</code></pre>
 
-    <article class="exercise" data-search="palabra invertida cadena"><div class="head"><div><h3>Ejercicio 10</h3><p>Pide una palabra y muestra la palabra invertida.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>palabra = input("Introduce una palabra: ")
+      </div>
+
+      <p class="tip">
+        Se cuenta manualmente, sin usar <code>len()</code>.
+      </p>
+
+    </div>
+
+  </details>
+
+</article>
+
+<!-- EJERCICIO 12 -->
+
+<article
+  class="exercise"
+  data-search="palabra invertida cadena"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 12</h3>
+
+      <p>
+        Pide una palabra y muestra la palabra invertida.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 12">palabra = input("Introduce una palabra: ")
+
 invertida = ""
 
 for letra in palabra:
-    invertida = letra + invertida
+invertida = letra + invertida
 
-print("La palabra invertida es:", invertida)</code></pre></div></div></details></article>
+print("La palabra invertida es:", invertida)</code></pre>
 
-    <article class="exercise exam" data-search="lista mayor valor examen"><div class="head"><div><h3>Ejercicio 11</h3><p>Crea una lista de números y muestra el mayor valor.</p><span class="badge">Salió en el examen</span></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>numeros = [5, 12, 3, 20, 8]
-mayor = numeros[0]
+      </div>
 
-for numero in numeros:
-    if numero &gt; mayor:
-        mayor = numero
+    </div>
 
-print("El mayor valor es:", mayor)</code></pre></div><p class="tip">Debe existir una lista. No uses <code>max()</code>.</p></div></details></article>
+  </details>
 
-    <article class="exercise" data-search="diccionario alumnos notas media"><div class="head"><div><h3>Ejercicio 12</h3><p>Crea un diccionario con alumnos y notas, y calcula la media.</p></div><label class="doneLabel"><input class="done" type="checkbox"> Dominado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>alumnos = {
-    "Ana": 8,
-    "Luis": 6,
-    "Marta": 9,
-    "Pedro": 7
+</article>
+
+<!-- EJERCICIO 13 -->
+
+<article
+  class="exercise"
+  data-search="diccionario alumnos notas media"
+>
+
+  <div class="head">
+
+    <div>
+      <h3>Ejercicio 13</h3>
+
+      <p>
+        Crea un diccionario con alumnos y notas, y calcula la media.
+      </p>
+    </div>
+
+    <label class="doneLabel">
+      <input class="done" type="checkbox">
+      Dominado
+    </label>
+
+  </div>
+
+  <details>
+
+    <summary>Ver solución</summary>
+
+    <div class="solution">
+
+      <div class="code">
+
+        <button class="copy" type="button">
+          Copiar
+        </button>
+
+        <pre><code data-title="Ejercicio 13">alumnos = {
+"Ana": 8,
+"Luis": 6,
+"Marta": 9,
+"Pedro": 7
+
 }
 
 suma = 0
 contador = 0
 
 for alumno in alumnos:
-    suma = suma + alumnos[alumno]
-    contador = contador + 1
+suma = suma + alumnos[alumno]
+contador = contador + 1
 
 media = suma / contador
-print("La media de las notas es:", media)</code></pre></div></div></details></article>
 
-    <article class="exercise exam" data-search="letra a palabra contar examen extra"><div class="head"><div><h3>Ejercicio extra del examen</h3><p>Pide una palabra y muestra cuántas veces aparece la letra «a».</p><span class="badge">Salió en el examen</span></div><label class="doneLabel"><input class="extra" type="checkbox"> Practicado</label></div><details><summary>Ver solución</summary><div class="solution"><div class="code"><button class="copy">Copiar</button><pre><code>palabra = input("Introduce una palabra: ")
-contador = 0
+print("La media de las notas es:", media)</code></pre>
 
-for letra in palabra:
-    if letra == "a":
-        contador = contador + 1
+      </div>
 
-print("La letra a aparece", contador, "veces")</code></pre></div><p class="tip">No uses <code>palabra.count("a")</code>.</p></div></details></article>
-  </section>
+    </div>
 
-  <section class="patterns"><h2>Patrones que debes memorizar</h2><div class="patternGrid">
-    <div class="pattern"><h3>Acumulador</h3><pre><code>suma = 0
+  </details>
+
+</article>
+
+  </section>  <section class="patterns"><h2>Patrones que debes memorizar</h2>
+
+<div class="patternGrid">
+
+  <div class="pattern">
+
+    <h3>Acumulador</h3>
+
+    <pre><code>suma = 0
+
 for numero in datos:
-    suma = suma + numero</code></pre></div>
-    <div class="pattern"><h3>Contador</h3><pre><code>contador = 0
+suma = suma + numero</code></pre>
+
+  </div>
+
+  <div class="pattern">
+
+    <h3>Contador</h3>
+
+    <pre><code>contador = 0
+
 for elemento in datos:
-    if condicion:
-        contador += 1</code></pre></div>
-    <div class="pattern"><h3>Mayor de una lista</h3><pre><code>mayor = lista[0]
+if condicion:
+contador = contador + 1</code></pre>
+
+  </div>
+
+  <div class="pattern">
+
+    <h3>Mayor de una lista</h3>
+
+    <pre><code>mayor = lista[0]
+
 for numero in lista:
-    if numero &gt; mayor:
-        mayor = numero</code></pre></div>
-    <div class="pattern"><h3>Invertir palabra</h3><pre><code>invertida = ""
+if numero > mayor:
+mayor = numero</code></pre>
+
+  </div>
+
+  <div class="pattern">
+
+    <h3>Invertir palabra</h3>
+
+    <pre><code>invertida = ""
+
 for letra in palabra:
-    invertida = letra + invertida</code></pre></div>
-  </div></section>
-  <footer>Funciona sin conexión · El progreso se guarda en el dispositivo</footer>
-</main>
-<script>
-  const cards=[...document.querySelectorAll('.exercise')];
-  const checks=[...document.querySelectorAll('.done')];
-  const allChecks=[...document.querySelectorAll('.done,.extra')];
-  const bar=document.getElementById('progressBar');
-  const text=document.getElementById('progressText');
-  function update(){const n=checks.filter(x=>x.checked).length;text.textContent=`${n} de ${checks.length}`;bar.style.width=`${n/checks.length*100}%`;allChecks.forEach((c,i)=>localStorage.setItem('py-practica-'+i,c.checked?'1':'0'))}
-  allChecks.forEach((c,i)=>{c.checked=localStorage.getItem('py-practica-'+i)==='1';c.addEventListener('change',update)});update();
-  document.getElementById('search').addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();cards.forEach(c=>c.classList.toggle('hidden',!(c.innerText+' '+c.dataset.search).toLowerCase().includes(q)))})
-  let open=false;document.getElementById('toggleAll').addEventListener('click',e=>{open=!open;document.querySelectorAll('details').forEach(d=>d.open=open);e.target.textContent=open?'Ocultar todas las soluciones':'Mostrar todas las soluciones'});
-  document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',async()=>{const code=b.nextElementSibling.innerText;try{await navigator.clipboard.writeText(code)}catch{const t=document.createElement('textarea');t.value=code;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar',1100)}));
-</script>
-</body>
-</html>
+invertida = letra + invertida</code></pre>
+
+  </div>
+
+</div>
+
+  </section>  <footer>
+    Funciona sin conexión · El progreso se guarda en el dispositivo
+  </footer></main><div
+  id="notice"
+  class="notice"
+  role="status"
+  aria-live="polite"
+></div><script>
+  const cards = [
+    ...document.querySelectorAll(".exercise")
+  ];
+
+  const checks = [
+    ...document.querySelectorAll(".done")
+  ];
+
+  const progressBar =
+    document.getElementById("progressBar");
+
+  const progressText =
+    document.getElementById("progressText");
+
+  const notice =
+    document.getElementById("notice");
+
+
+  function showNotice(message) {
+    notice.textContent = message;
+
+    notice.classList.add("show");
+
+    clearTimeout(showNotice.timer);
+
+    showNotice.timer = setTimeout(() => {
+      notice.classList.remove("show");
+    }, 1800);
+  }
+
+
+  function updateProgress() {
+    const completed = checks.filter(
+      check => check.checked
+    ).length;
+
+    progressText.textContent =
+      `${completed} de ${checks.length}`;
+
+    if (checks.length > 0) {
+      progressBar.style.width =
+        `${(completed / checks.length) * 100}%`;
+    } else {
+      progressBar.style.width = "0%";
+    }
+
+    checks.forEach((check, index) => {
+      localStorage.setItem(
+        `py-practica-${index}`,
+        check.checked ? "1" : "0"
+      );
+    });
+  }
+
+
+  checks.forEach((check, index) => {
+    check.checked =
+      localStorage.getItem(
+        `py-practica-${index}`
+      ) === "1";
+
+    check.addEventListener(
+      "change",
+      updateProgress
+    );
+  });
+
+
+  updateProgress();
+
+
+  document
+    .getElementById("search")
+    .addEventListener("input", event => {
+
+      const query =
+        event.target.value
+          .toLowerCase()
+          .trim();
+
+      cards.forEach(card => {
+        const content =
+          `${card.innerText} ${card.dataset.search}`
+            .toLowerCase();
+
+        card.classList.toggle(
+          "hidden",
+          !content.includes(query)
+        );
+      });
+    });
+
+
+  let allOpen = false;
+
+
+  document
+    .getElementById("toggleAll")
+    .addEventListener("click", event => {
+
+      allOpen = !allOpen;
+
+      document
+        .querySelectorAll(".exercise details")
+        .forEach(details => {
+          details.open = allOpen;
+        });
+
+      event.target.textContent = allOpen
+        ? "Ocultar todas las soluciones"
+        : "Mostrar todas las soluciones";
+    });
+
+
+  async function copyText(content) {
+    try {
+      await navigator.clipboard.writeText(content);
+    } catch (error) {
+
+      const textarea =
+        document.createElement("textarea");
+
+      textarea.value = content;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+
+      document.execCommand("copy");
+
+      textarea.remove();
+    }
+  }
+
+
+  document
+    .querySelectorAll(".copy")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        async () => {
+
+          const code =
+            button.nextElementSibling.innerText;
+
+          await copyText(code);
+
+          const previousText =
+            button.textContent;
+
+          button.textContent = "Copiado";
+
+          showNotice(
+            "Ejercicio copiado"
+          );
+
+          setTimeout(() => {
+            button.textContent =
+              previousText;
+          }, 1100);
+        }
+      );
+    });
+
+
+  document
+    .getElementById("copyAll")
+    .addEventListener(
+      "click",
+      async () => {
+
+        const blocks = [
+          ...document.querySelectorAll(
+            ".exercise pre code"
+          )
+        ];
+
+        const fullText = blocks
+          .map((code, index) => {
+
+            const title =
+              code.dataset.title ||
+              `Ejercicio ${index + 1}`;
+
+            return [
+              "# ============================================================",
+              `# ${title.toUpperCase()}`,
+              "# ============================================================",
+              "",
+              code.innerText.trim()
+            ].join("\n");
+
+          })
+          .join("\n\n\n");
+
+        await copyText(fullText);
+
+        showNotice(
+          "Los 13 ejercicios se han copiado en orden"
+        );
+      }
+    );
+</script></body>
+        </html>
